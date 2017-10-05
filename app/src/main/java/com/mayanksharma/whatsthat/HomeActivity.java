@@ -1,29 +1,20 @@
 package com.mayanksharma.whatsthat;
 
 import android.annotation.TargetApi;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -106,7 +97,6 @@ public class HomeActivity extends AppCompatActivity {
                     ArrayList<Course> courseArrayList=new ArrayList<Course>();
                     courseArrayList.add(course);
                     Toast.makeText(HomeActivity.this, scanContent, Toast.LENGTH_LONG).show();
-
                     Intent intent1 = new Intent(HomeActivity.this, FirstActivity.class);
                     intent1.putParcelableArrayListExtra("course",courseArrayList);
                     startActivity(intent1);
@@ -149,5 +139,7 @@ public class HomeActivity extends AppCompatActivity {
         int requestCode = 200;
         requestPermissions(permissions, requestCode);
     }
+
+
 
 }

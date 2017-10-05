@@ -37,6 +37,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.mayanksharma.whatsthat.model.Course;
 
 public class UploadActivity extends AppCompatActivity {
     private Spinner spinner1, spinner2, spinner3;
@@ -235,7 +236,12 @@ public class UploadActivity extends AppCompatActivity {
                     @SuppressWarnings("VisibleForTests")
                     final String Get_pdf_url = taskSnapshot.getDownloadUrl().toString();
 
-                    Data data = new Data( Get_Course, Get_Year, Get_Sem, get_id, Get_pdf_url);
+                    Course data = new Course();//( Get_Course, Get_Year, Get_Sem, get_id, Get_pdf_url);
+                    data.setCourse(Get_Course);
+                    data.setYear(Get_Year);
+                    data.setSem(Get_Sem);
+                    data.setId(get_id);
+                    data.setUrl(Get_pdf_url);
                     mDatabase.child(get_id).setValue(data);
                     //progressBar.setVisibility(View.GONE);
 
