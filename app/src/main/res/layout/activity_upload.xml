@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#009688"
+    tools:context="com.mayanksharma.whatsthat.UploadActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload"
+        android:textSize="35sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="35dp"/>
+
+
+    <!-- Course-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="35dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:text="@string/course"
+            style="@style/CategoryStyle"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="2">
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:id="@+id/course_spinner"
+                android:paddingRight="16dp"
+                android:spinnerMode="dropdown">
+
+            </Spinner>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!-- Year-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:text="@string/year"
+            style="@style/CategoryStyle"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="2">
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:id="@+id/year_spinner"
+                android:paddingRight="16dp"
+                android:spinnerMode="dropdown">
+
+            </Spinner>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!-- Semester-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:text="@string/semester"
+            style="@style/CategoryStyle"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="2">
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:id="@+id/semester_spinner"
+                android:paddingRight="16dp"
+                android:spinnerMode="dropdown">
+
+            </Spinner>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- pdf selection-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:text="@string/select_pdf"
+            style="@style/CategoryStyle"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="2">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choose"
+                android:id="@+id/pdf_button"
+                android:paddingRight="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pdf_status"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- QR code generate-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:text="@string/qr_code"
+            style="@style/CategoryStyle"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="2">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/generate"
+                android:id="@+id/qr_generate"
+                android:paddingRight="16dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:id="@+id/qr_image"
+            android:layout_marginTop="10dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/upload_button"
+        android:text="@string/upload"
+        android:layout_gravity="center_horizontal"/>
+
+
+    </LinearLayout>
+</ScrollView>

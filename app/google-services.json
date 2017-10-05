@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "983000061903",
+    "firebase_url": "https://whatsthat-52cbb.firebaseio.com",
+    "project_id": "whatsthat-52cbb",
+    "storage_bucket": "whatsthat-52cbb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983000061903:android:5375b5713d4ceb79",
+        "android_client_info": {
+          "package_name": "com.mayanksharma.whatsthat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "983000061903-h65pvs8mcelre4cvqrjmph53h474v450.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANQRPJKiLnxCWaNws8cLQqtw2P_zsbBIw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
