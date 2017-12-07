@@ -34,7 +34,6 @@ public class WevViewPdf extends AppCompatActivity {
         mWebview.getSettings().setUseWideViewPort(true);
         String url = "http://docs.google.com/viewer?url="+getIntent().getStringExtra("url")+".pdf";
         final Activity activity = this;
-
         mWebview.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
                 activity.setTitle("Loading...");
@@ -43,7 +42,6 @@ public class WevViewPdf extends AppCompatActivity {
                     activity.setTitle(R.string.app_name);
             }
         });
-
         mWebview.setWebViewClient(new WebViewClient() {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
@@ -51,7 +49,7 @@ public class WevViewPdf extends AppCompatActivity {
         });
         mWebview .loadUrl(url);*/
         setContentView(R.layout.activity_wev_view_pdf);
-         pdfView=(PDFView) findViewById(R.id.pdfView);
+        pdfView=(PDFView) findViewById(R.id.pdfView);
         try {
             displayFromUri(getIntent().getStringExtra("url"));
         } catch (URISyntaxException e) {

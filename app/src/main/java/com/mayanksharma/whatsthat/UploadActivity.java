@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -37,11 +38,16 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
-import com.mayanksharma.whatsthat.model.Course;
+
+import java.io.ByteArrayOutputStream;
+
+import static android.R.attr.bitmap;
+import static android.R.attr.data;
 
 public class UploadActivity extends AppCompatActivity {
     private Spinner spinner1, spinner2, spinner3;
     private ArrayAdapter<CharSequence> adapter1, adapter2, adapter3;
+    private EditText mRoomNo;
     private Button Upload_btn, Pdf_btn, Qr_generate;
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
@@ -50,11 +56,16 @@ public class UploadActivity extends AppCompatActivity {
     private TextView PdfStatus;
     private String text2Qr;
     String get_id;
+    private Bitmap bitmap;
+    String Get_qr_url;
+    private int flag = 0;
     private Uri mQrCodeUri = null;
     //ProgressBar progressBar;
     private ProgressDialog mProgress;
     private Uri mPdfUri = null;
-
+    private Uri mQRUri = null;
+    private String COURSE;
+    public final static int QRcodeWidth = 500;
 
 
     @Override
@@ -66,22 +77,23 @@ public class UploadActivity extends AppCompatActivity {
         mStorage = storage.getReferenceFromUrl("gs://whatsthat-52cbb.appspot.com/");
         mDatabase = FirebaseDatabase.getInstance().getReference("Docs");
 
-        spinner1 = (Spinner)findViewById(R.id.course_spinner);
-        spinner2 = (Spinner)findViewById(R.id.year_spinner);
-        spinner3 = (Spinner)findViewById(R.id.semester_spinner);
+        spinner1 = (Spinner) findViewById(R.id.course_spinner);
+        spinner2 = (Spinner) findViewById(R.id.year_spinner);
+        spinner3 = (Spinner) findViewById(R.id.semester_spinner);
+        mRoomNo = (EditText)findViewById(R.id.roomNo);
 
-        adapter1 = ArrayAdapter.createFromResource(this,R.array.courses,android.R.layout.simple_spinner_item);
-        adapter2 = ArrayAdapter.createFromResource(this,R.array.years,android.R.layout.simple_spinner_item);
-        adapter3 = ArrayAdapter.createFromResource(this,R.array.semesters,android.R.layout.simple_spinner_item);
+        adapter1 = ArrayAdapter.createFromResource(this, R.array.courses, android.R.layout.simple_spinner_item);
+        adapter2 = ArrayAdapter.createFromResource(this, R.array.years, android.R.layout.simple_spinner_item);
+        adapter3 = ArrayAdapter.createFromResource(this, R.array.semesters, android.R.layout.simple_spinner_item);
 
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_item);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        Upload_btn = (Button)findViewById(R.id.upload_button);
-        Pdf_btn = (Button)findViewById(R.id.pdf_button);
-        Qr_generate = (Button)findViewById(R.id.qr_generate);
-        Image = (ImageView)findViewById(R.id.qr_image);
-        PdfStatus = (TextView)findViewById(R.id.pdf_status);
+        Upload_btn = (Button) findViewById(R.id.upload_button);
+        Pdf_btn = (Button) findViewById(R.id.pdf_button);
+        Qr_generate = (Button) findViewById(R.id.qr_generate);
+        Image = (ImageView) findViewById(R.id.qr_image);
+        PdfStatus = (TextView) findViewById(R.id.pdf_status);
         //progressBar = (ProgressBar) findViewById(R.id.progressbar);
 
         spinner1.setAdapter(adapter1);
@@ -94,7 +106,7 @@ public class UploadActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getBaseContext(),parent.getItemAtPosition(position)+ "selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + " selected", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -107,7 +119,7 @@ public class UploadActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getBaseContext(),parent.getItemAtPosition(position)+ "selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + " selected", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -120,7 +132,7 @@ public class UploadActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getBaseContext(),parent.getItemAtPosition(position)+ "selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + " selected", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -133,9 +145,9 @@ public class UploadActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 UploadIt(mPdfUri);
-
+                //UploadQR();
                 //Toast.makeText(this, "uploaded", Toast.LENGTH_LONG).show();
-                 //Toast makeText (Context context, CharSequence text, int duration);
+                //Toast makeText (Context context, CharSequence text, int duration);
             }
         });
 
@@ -144,9 +156,9 @@ public class UploadActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-              //  Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-               // galleryIntent.setType("application/pdf");
-               // startActivityForResult(galleryIntent, GALLERY_REQUEST);
+                //  Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                // galleryIntent.setType("application/pdf");
+                // startActivityForResult(galleryIntent, GALLERY_REQUEST);
                 getPDF();
             }
         });
@@ -175,6 +187,43 @@ public class UploadActivity extends AppCompatActivity {
 
         mProgress = new ProgressDialog(this);
 
+    }
+
+
+
+
+    Bitmap TextToImageEncode(String Value) throws WriterException {
+        BitMatrix bitMatrix;
+        try {
+            bitMatrix = new MultiFormatWriter().encode(
+                    Value,
+                    BarcodeFormat.DATA_MATRIX.QR_CODE,
+                    QRcodeWidth, QRcodeWidth, null
+            );
+
+        } catch (IllegalArgumentException Illegalargumentexception) {
+
+            return null;
+        }
+        int bitMatrixWidth = bitMatrix.getWidth();
+
+        int bitMatrixHeight = bitMatrix.getHeight();
+
+        int[] pixels = new int[bitMatrixWidth * bitMatrixHeight];
+
+        for (int y = 0; y < bitMatrixHeight; y++) {
+            int offset = y * bitMatrixWidth;
+
+            for (int x = 0; x < bitMatrixWidth; x++) {
+
+                pixels[offset + x] = bitMatrix.get(x, y) ?
+                        getResources().getColor(R.color.black) : getResources().getColor(R.color.white);
+            }
+        }
+        Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
+
+        bitmap.setPixels(pixels, 0, 500, 0, 0, bitMatrixWidth, bitMatrixHeight);
+        return bitmap;
     }
 
     private void getPDF() {
@@ -208,14 +257,18 @@ public class UploadActivity extends AppCompatActivity {
                 PdfStatus.setText("Selected");
 
                 mPdfUri = data.getData();
-            }else{
-                Toast.makeText(this, "No file chosen", Toast.LENGTH_SHORT).show();
+                flag = 1;
+            } else {
+                Toast.makeText(UploadActivity.this, "No file chosen", Toast.LENGTH_SHORT).show();
             }
+        }
+        else
+        {
+            
         }
     }
 
-    private void UploadIt(Uri data)
-    {
+    private void UploadIt(Uri data) {
         //progressBar.setVisibility(View.VISIBLE);
         mProgress.setMessage("Uploading, Please Wait...");
 
@@ -223,9 +276,11 @@ public class UploadActivity extends AppCompatActivity {
         final String Get_Course = spinner1.getSelectedItem().toString();
         final String Get_Year = spinner2.getSelectedItem().toString();
         final String Get_Sem = spinner3.getSelectedItem().toString();
+        final String Get_Room = mRoomNo.getText().toString().trim();
 
-        if (!TextUtils.isEmpty(Get_Course) && !TextUtils.isEmpty(Get_Year) && !TextUtils.isEmpty(Get_Sem))
-        {   mProgress.show();
+        if (!TextUtils.isEmpty(Get_Course) && !TextUtils.isEmpty(Get_Year) && !TextUtils.isEmpty(Get_Sem) && flag == 1) {
+            mProgress.show();
+
             //String get_id = mDatabase.push().getKey();
             StorageReference filePath = mStorage.child(Constants.STORAGE_PATH_UPLOADS).child(mPdfUri.getLastPathSegment() + ".pdf");
             filePath.putFile(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -236,24 +291,25 @@ public class UploadActivity extends AppCompatActivity {
                     @SuppressWarnings("VisibleForTests")
                     final String Get_pdf_url = taskSnapshot.getDownloadUrl().toString();
 
-                    Course data = new Course();//( Get_Course, Get_Year, Get_Sem, get_id, Get_pdf_url);
-                    data.setCourse(Get_Course);
-                    data.setYear(Get_Year);
-                    data.setSem(Get_Sem);
-                    data.setId(get_id);
-                    data.setUrl(Get_pdf_url);
+                    Data data = new Data(Get_Course, Get_Year, Get_Sem, get_id, Get_Room, Get_pdf_url);
                     mDatabase.child(get_id).setValue(data);
                     //progressBar.setVisibility(View.GONE);
 
-                    Intent intent = new Intent(UploadActivity.this, FinishActivity.class);
+
+                    Intent intent = new Intent(UploadActivity.this, DisplayActivity.class);
+                    //Intent intent = new Intent(UploadActivity.this, DisplayActivity.class);
+                    mProgress.dismiss();
+                    Bundle b = new Bundle();
+                    b.putSerializable("user", data);
+                    intent.putExtras(b);
                     startActivity(intent);
                     //Toast.makeText(this, "uploaded", Toast.LENGTH_LONG).show();
-                    mProgress.dismiss();
+
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-
+                    Toast.makeText(UploadActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -264,12 +320,41 @@ public class UploadActivity extends AppCompatActivity {
             });
 
 
-
-
-        }else
-        {
-            Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(UploadActivity.this, "Please select a pdf file", Toast.LENGTH_LONG).show();
         }
 
     }
+
+    private void UploadQR() {
+        String point = "123";
+        try {
+            bitmap = TextToImageEncode(get_id + " " + point);
+
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            final byte[] data1 = baos.toByteArray();
+
+            UploadTask uploadTask = mStorage.child(Constants.STORAGE_PATH_QR_CODES).child(mQRUri.getLastPathSegment() + ".jpeg").putBytes(data1);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(UploadActivity.this, "Error Occurred", Toast.LENGTH_LONG).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    @SuppressWarnings("VisibleForTests")
+                    final String Get_qr_url = taskSnapshot.getDownloadUrl().toString();
+                    Qrdata data1 = new Qrdata(Get_qr_url);
+                    mDatabase.child(get_id).setValue(data1);
+                }
+            });
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

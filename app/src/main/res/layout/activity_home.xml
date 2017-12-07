@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="4dp"
-    android:background="#3F51B5"
+    android:background="#00796B"
     tools:context="com.mayanksharma.whatsthat.HomeActivity">
 
     <Button
@@ -19,35 +19,34 @@
         android:textSize="20sp"
         android:background="#FFA000"/>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="100dp"
-    android:id="@+id/linearLayout"
-    android:background="#3F51B5">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="68dp"
-        android:text="What's"
-        android:textColor="#ffffff"
-        android:textSize="60sp" />
+        android:orientation="vertical"
+        android:layout_marginTop="100dp"
+        android:id="@+id/linearLayout"
+        android:background="#00796B">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
-        android:text="That!"
-        android:textColor="#FFffff"
-        android:textSize="60sp"
-        android:layout_alignTop="@+id/textView"
-        android:layout_alignStart="@+id/textView" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="68dp"
+            android:text="What's"
+            android:textColor="#ffffff"
+            android:textSize="60sp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="That?"
+            android:textColor="#FFffff"
+            android:textSize="60sp"
+            android:layout_alignTop="@+id/textView"
+            android:layout_gravity="center_horizontal"/>
 
 
 
@@ -58,18 +57,29 @@
             android:textSize="25sp"
             android:textColor="#C5CAE9"
             android:layout_below="@+id/textView2"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="6dp"/>
+            android:layout_marginLeft="6dp"
+            android:layout_gravity="center_horizontal"/>
 
 
 
-</LinearLayout>
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/floating_action_button"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@color/icon"
+        android:backgroundTint="@color/navigationBarColor"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
-</android.support.design.widget.CoordinatorLayout>
+        android:elevation="6dp"
+        app:pressedTranslationZ="12dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Developed by: \n Mayank Sharma(BCA) \n 9871639139,  mayank.sharma2410@gmail.com"
+        android:layout_gravity="bottom"
+        android:gravity="center"/>
+</FrameLayout>

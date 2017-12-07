@@ -12,11 +12,12 @@ public class Course implements Parcelable
     private String sem;
     private String year;
     private String url;
+    private String roomNo;
     public final static Creator<Course> CREATOR = new Creator<Course>() {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
         public Course createFromParcel(Parcel in) {
             return new Course(in);
@@ -27,7 +28,7 @@ public class Course implements Parcelable
         }
 
     }
-    ;
+            ;
 
     protected Course(Parcel in) {
         this.course = ((String) in.readValue((String.class.getClassLoader())));
@@ -35,6 +36,7 @@ public class Course implements Parcelable
         this.sem = ((String) in.readValue((String.class.getClassLoader())));
         this.year = ((String) in.readValue((String.class.getClassLoader())));
         this.url = ((String) in.readValue((String.class.getClassLoader())));
+        this.roomNo = ((String) in.readValue((String.class.getClassLoader())));
     }
 
     public Course() {
@@ -71,6 +73,17 @@ public class Course implements Parcelable
     public void setYear(String year) {
         this.year = year;
     }
+
+    public String getRoomNo()
+    {
+        return roomNo;
+    }
+
+    public void setRoomNo(String roomNo)
+    {
+        this.roomNo = roomNo;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -85,6 +98,7 @@ public class Course implements Parcelable
         dest.writeValue(sem);
         dest.writeValue(year);
         dest.writeValue(url);
+        dest.writeValue(roomNo);
     }
 
     public int describeContents() {

@@ -1,33 +1,37 @@
 <resources>
-    <string name="app_name">Whats This?</string>
+    <string name="app_name">What\'s That?</string>
     <string name="insert_dummy_data">insert dummy data</string>
     <string name="delete_all_entries">delete all entries</string>
     <string name="action_save">action save</string>
     <string name="action_delete">action delete</string>
-    <string name="what_s_that">What\'s That!</string>
+    <string name="what_s_that">What\'s That?</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="course">Course :</string>
-    <string name="year">Year :</string>
+    <string name="year">Section :</string>
     <string name="semester">Semester :</string>
     <string name="select_pdf">Select PDF :</string>
     <string name="qr_code">QR code :</string>
     <string name="generate">generate</string>
     <string name="choose">choose</string>
     <string name="upload">upload</string>
+    <string name="room_no">Room No. :</string>
     <string-array name="courses">
+        <item>None</item>
         <item>BBA</item>
         <item>BCA</item>
         <item>MBA</item>
     </string-array>
 
     <string-array name="years">
-        <item>1st</item>
-        <item>2nd</item>
-        <item>3rd</item>
+        <item>None</item>
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
     </string-array>
 
     <string-array name="semesters">
+        <item>None</item>
         <item>1st</item>
         <item>2nd</item>
         <item>3rd</item>

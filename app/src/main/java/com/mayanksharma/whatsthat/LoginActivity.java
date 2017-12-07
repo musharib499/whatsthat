@@ -49,6 +49,10 @@ public class LoginActivity extends AppCompatActivity {
         {
             Intent intent = new Intent(LoginActivity.this, UploadActivity.class);
             startActivity(intent);
+            Toast.makeText(LoginActivity.this, "Logged In", Toast.LENGTH_LONG).show();
+        } else
+        {
+            Toast.makeText(LoginActivity.this, "Please try again", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -56,12 +60,12 @@ public class LoginActivity extends AppCompatActivity {
     public boolean validate()
     {
         boolean valid = true;
-        if(username.isEmpty() || username.length()>30)
+        if(!username.equals("admin") || username.isEmpty() || username.length()>30)
         {
             et_username.setError("Please enter valid Username");
             valid = false;
         }
-        if (pass.isEmpty())
+        if (!pass.equals("admin123") || pass.isEmpty())
         {
             et_pass.setError("Please enter valid Password");
         }

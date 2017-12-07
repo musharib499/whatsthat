@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -33,6 +34,7 @@ public class FirstActivity extends AppCompatActivity {
     private TextView tv_course;
     private TextView tv_sem;
     private TextView tv_year;
+    private TextView tv_roomNo;
     private StorageReference mStorage;
     private DatabaseReference mDatabase;
     private long enqueue;
@@ -54,6 +56,7 @@ public class FirstActivity extends AppCompatActivity {
         tv_sem = (TextView)findViewById(R.id.post_sem);
         tv_course = (TextView)findViewById(R.id.post_course);
         tv_year = (TextView)findViewById(R.id.post_year);
+        tv_roomNo = (TextView)findViewById(R.id.post_room);
         back = (Button)findViewById(R.id.back1);
         pdfView = (Button)findViewById(R.id.view);
         showData(course);
@@ -72,25 +75,21 @@ public class FirstActivity extends AppCompatActivity {
     }
 
     public void showData(ArrayList<Course> courses) {
-        final Course cour=courses.get(0);
+        if (courses != null) {
+            final Course cour = courses.get(0);
 
-        tv_sem.setText(cour.getSem());
-        tv_year.setText(cour.getYear());
-        tv_course.setText(cour.getCourse());
-        download(cour.getUrl(),cour.getCourse());
-       /* progressbar.setVisibility(View.GONE);
-        pdfView.setVisibility(View.VISIBLE);
-        pdfView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse(cour.getUrl()+".pdf"));
-                intent.putExtra("url",cour.getUrl());
-                startActivity(intent);
-            }
-        });*/
+            if (!TextUtils.isEmpty(cour.getSem()))
+                tv_sem.setText(cour.getSem());
 
+            if (!TextUtils.isEmpty(cour.getYear()))
+                tv_year.setText(cour.getYear());
 
+            if (!TextUtils.isEmpty(cour.getCourse()))
+                tv_course.setText(cour.getCourse());
 
+            if (!TextUtils.isEmpty(cour.getCourse())&!TextUtils.isEmpty(cour.getUrl()))
+                 download(cour.getUrl(), cour.getCourse());
+        }
     }
 
     public void download(String url,String pdfName)

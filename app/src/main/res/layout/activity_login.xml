@@ -17,14 +17,18 @@
         android:layout_height="wrap_content"
         android:text="@string/what_s_that"
         android:textSize="45sp"
+        android:id="@+id/whatsthat"
         android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
         android:layout_marginTop="45dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="150dp">
+        android:layout_marginTop="90dp"
+        android:gravity="center_vertical"
+        android:layout_below="@id/whatsthat">
 
      <android.support.design.widget.TextInputLayout
          android:layout_height="wrap_content"
@@ -58,7 +62,7 @@
             android:text="Log in"
             android:id="@+id/login"
             android:textColor="#ffffff"
-            android:background="#FBC02d"/>
+            android:background="#FFA000"/>
 
     </LinearLayout>
 

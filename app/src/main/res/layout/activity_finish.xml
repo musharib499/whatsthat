@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:text="THANK YOU"
         android:textSize="35sp"
+        android:textColor="#ffffff"
         android:layout_gravity="center"
         android:layout_marginTop="35dp"/>
 
@@ -24,15 +25,17 @@
         android:layout_height="wrap_content"
         android:text="FOR USING"
         android:textSize="35sp"
+        android:textColor="#ffffff"
         android:layout_gravity="center"
         android:layout_marginTop="35dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="WHAT'S THAT!"
+        android:text="WHAT'S THAT?"
         android:textSize="45sp"
         android:layout_gravity="center"
+        android:textColor="#ffffff"
         android:layout_marginTop="35dp"/>
 
     <Button
@@ -42,6 +45,6 @@
         android:id="@+id/logout"
         android:textColor="#ffffff"
         android:layout_marginTop="50dp"
-        android:background="#FBC02d"/>
+        android:background="#FFA000"/>
 
 </LinearLayout>

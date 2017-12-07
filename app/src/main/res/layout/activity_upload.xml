@@ -19,8 +19,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Upload"
-        android:textSize="35sp"
+        android:textSize="45sp"
         android:layout_gravity="center"
+        android:textColor="#ffffff"
         android:layout_marginTop="35dp"/>
 
 
@@ -58,38 +59,6 @@
     </LinearLayout>
 
 
-    <!-- Year-->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp">
-
-        <TextView
-            android:text="@string/year"
-            style="@style/CategoryStyle"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="2">
-
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:id="@+id/year_spinner"
-                android:paddingRight="16dp"
-                android:spinnerMode="dropdown">
-
-            </Spinner>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
 
     <!-- Semester-->
 
@@ -122,6 +91,70 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
+        <!-- Year-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp">
+
+            <TextView
+                android:text="@string/year"
+                style="@style/CategoryStyle"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="2">
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:id="@+id/year_spinner"
+                    android:paddingRight="16dp"
+                    android:spinnerMode="dropdown">
+
+                </Spinner>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!-- Room No.-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp">
+
+            <TextView
+                android:text="@string/room_no"
+                style="@style/CategoryStyle"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="2">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Click to enter"
+                    android:id="@+id/roomNo"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
 
     <!-- pdf selection-->
 
@@ -181,6 +214,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/generate"
+
                 android:id="@+id/qr_generate"
                 android:paddingRight="16dp"/>
 
@@ -206,6 +240,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/upload_button"
         android:text="@string/upload"
+        android:background="#FFA000"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"/>
 
 

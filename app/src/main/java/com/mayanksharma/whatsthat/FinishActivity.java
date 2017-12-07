@@ -24,6 +24,7 @@ public class FinishActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(FinishActivity.this, HomeActivity.class);
                 startActivity(intent);
+                Toast.makeText(FinishActivity.this, "Logged Out", Toast.LENGTH_LONG).show();
             }
         });
 

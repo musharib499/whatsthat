@@ -20,13 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".HomeActivity" />
         <activity android:name=".FirstActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".UploadActivity" />
         <activity android:name=".FinishActivity" />
-        <activity android:name=".WevViewPdf"></activity>
+        <activity android:name=".WevViewPdf" />
+        <activity android:name=".DisplayActivity"></activity>
     </application>
 
 </manifest>

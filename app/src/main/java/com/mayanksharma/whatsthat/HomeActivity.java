@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     String post_sem;
     String post_image;
     String id;
+    private int flag = 0;
     private FirebaseDatabase mDatabase;
     private StorageReference mStorage;
     Data uid;
@@ -74,7 +75,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        //fetching the id from the database
+
 
     }
 
@@ -89,25 +90,36 @@ public class HomeActivity extends AppCompatActivity {
         if (scanningResult != null) {
             //we have a result
             final String scanContent = scanningResult.getContents();
-            mDatabase.getReference("Docs").getRef().child(scanContent).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    Course course=dataSnapshot.getValue(Course.class);
-                    ArrayList<Course> courseArrayList=new ArrayList<Course>();
-                    courseArrayList.add(course);
-                    Toast.makeText(HomeActivity.this, scanContent, Toast.LENGTH_LONG).show();
-                    Intent intent1 = new Intent(HomeActivity.this, FirstActivity.class);
-                    intent1.putParcelableArrayListExtra("course",courseArrayList);
-                    startActivity(intent1);
-                    finish();
-                }
+            if(scanContent == null)
+            {
+                Toast.makeText(HomeActivity.this, "No result", Toast.LENGTH_LONG).show();
+            } else {//Toast.makeText(HomeActivity.this, scanContent, Toast.LENGTH_LONG).show();
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.e("Home Scaner Error", "Failed to read app title value.", databaseError.toException());
-                }
-            });
+                mDatabase.getReference("Docs").getRef().child(scanContent).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+
+                            Course course = dataSnapshot.getValue(Course.class);
+                            ArrayList<Course> courseArrayList = new ArrayList<Course>();
+                            courseArrayList.add(course);
+                            Intent intent1 = new Intent(HomeActivity.this, FirstActivity.class);
+                            intent1.putParcelableArrayListExtra("course", courseArrayList);
+                            startActivity(intent1);
+                            finish();
+
+                        }else{
+                            Toast.makeText(HomeActivity.this, "Result Not Found", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("Home Scanner Error", "Failed to read app title value.", databaseError.toException());
+                    }
+                });
+            }
           /*  if(scanContent == null)
             {
                 Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
@@ -115,7 +127,6 @@ public class HomeActivity extends AppCompatActivity {
             else if (scanContent.equals(id)) {
                 //Toast toast = Toast.makeText(getApplicationContext(), "1234", Toast.LENGTH_SHORT);
                 //toast.show();
-
             } else {
                 Toast.makeText(HomeActivity.this, "Sorry something went wrong", Toast.LENGTH_LONG).show();
             }*/
