@@ -11,6 +11,7 @@ import android.widget.Toast;
 public class FinishActivity extends AppCompatActivity {
 
     private Button log_out;
+    private Button upl_agn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +19,15 @@ public class FinishActivity extends AppCompatActivity {
         setContentView(R.layout.activity_finish);
 
         log_out = (Button)findViewById(R.id.logout);
+        upl_agn = (Button)findViewById(R.id.upload_again);
+
+        upl_agn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(FinishActivity.this, UploadActivity.class);
+                startActivity(intent1);
+            }
+        });
 
         log_out.setOnClickListener(new View.OnClickListener() {
             @Override

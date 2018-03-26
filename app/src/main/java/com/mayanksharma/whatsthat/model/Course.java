@@ -11,6 +11,7 @@ public class Course implements Parcelable
     private String id;
     private String sem;
     private String year;
+    private String event;
     private String url;
     private String roomNo;
     public final static Creator<Course> CREATOR = new Creator<Course>() {
@@ -35,6 +36,7 @@ public class Course implements Parcelable
         this.id = ((String) in.readValue((String.class.getClassLoader())));
         this.sem = ((String) in.readValue((String.class.getClassLoader())));
         this.year = ((String) in.readValue((String.class.getClassLoader())));
+        this.event = ((String) in.readValue(String.class.getClassLoader()));
         this.url = ((String) in.readValue((String.class.getClassLoader())));
         this.roomNo = ((String) in.readValue((String.class.getClassLoader())));
     }
@@ -72,6 +74,16 @@ public class Course implements Parcelable
 
     public void setYear(String year) {
         this.year = year;
+    }
+
+    public String getEvent()
+    {
+        return event;
+    }
+
+    public void setEvent(String event)
+    {
+        this.event = event;
     }
 
     public String getRoomNo()

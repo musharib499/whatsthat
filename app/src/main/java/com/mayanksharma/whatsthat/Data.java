@@ -11,6 +11,7 @@ public class Data implements Serializable{
     private String Course;
     private String Year;
     private String Sem;
+    private String Event;
     private String Id;
     private String Url;
     private String RoomNo;
@@ -20,10 +21,11 @@ public class Data implements Serializable{
 
     }
 
-    public Data(String course, String year, String sem, String id, String roomNo, String url) {
+    public Data(String course, String year, String sem, String id, String roomNo, String url, String event) {
         this.Course = course;
         this.Year = year;
         this.Sem = sem;
+        this.Event = event;
         this.Id = id;
         this.RoomNo = roomNo;
         this.Url= url;
@@ -39,6 +41,11 @@ public class Data implements Serializable{
 
     public String getSem() {
         return Sem;
+    }
+
+    public String getEvent()
+    {
+        return Event;
     }
 
     public String getId() {
@@ -61,6 +68,11 @@ public class Data implements Serializable{
 
     public void setSem(String sem) {
         Sem = sem;
+    }
+
+    public void setEvent(String event)
+    {
+        Event = event;
     }
 
     public void setId(String id) {

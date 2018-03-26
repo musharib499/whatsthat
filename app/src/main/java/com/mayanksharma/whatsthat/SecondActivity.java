@@ -1,40 +1,32 @@
 package com.mayanksharma.whatsthat;
 
 import android.app.DownloadManager;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
 import com.mayanksharma.whatsthat.model.Course;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirstActivity extends AppCompatActivity {
+import static com.mayanksharma.whatsthat.R.id.pdfView;
+
+public class SecondActivity extends AppCompatActivity {
     private Button back,pdfView;
-    private TextView tv_course;
-    private TextView tv_sem;
-    private TextView tv_year;
-    private TextView tv_roomNo;
     private StorageReference mStorage;
     private DatabaseReference mDatabase;
     private long enqueue;
@@ -48,15 +40,11 @@ public class FirstActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first);
+        setContentView(R.layout.activity_second);
         ArrayList<Course> course = this.getIntent().getParcelableArrayListExtra("course");
 
         dataList = new ArrayList<>();
         progressbar = (LinearLayout) findViewById(R.id.llprogressbar);
-        tv_sem = (TextView)findViewById(R.id.post_sem);
-        tv_course = (TextView)findViewById(R.id.post_course);
-        tv_year = (TextView)findViewById(R.id.post_year);
-        tv_roomNo = (TextView)findViewById(R.id.post_room);
         back = (Button)findViewById(R.id.back1);
         pdfView = (Button)findViewById(R.id.view);
         showData(course);
@@ -66,7 +54,7 @@ public class FirstActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(this, "Thank You for using WHATS THIS?", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(FirstActivity.this, HomeActivity.class);
+                Intent intent = new Intent(SecondActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
         });
@@ -78,20 +66,8 @@ public class FirstActivity extends AppCompatActivity {
         if (courses != null) {
             final Course cour = courses.get(0);
 
-            if (!TextUtils.isEmpty(cour.getSem()))
-                tv_sem.setText(cour.getSem());
-
-            if (!TextUtils.isEmpty(cour.getYear()))
-                tv_year.setText(cour.getYear());
-
-            if (!TextUtils.isEmpty(cour.getCourse()))
-                tv_course.setText(cour.getCourse());
-
-            if (!TextUtils.isEmpty(cour.getRoomNo()))
-                tv_roomNo.setText(cour.getRoomNo());
-
             if (!TextUtils.isEmpty(cour.getCourse())&!TextUtils.isEmpty(cour.getUrl()))
-                 download(cour.getUrl(), cour.getCourse());
+                download(cour.getUrl(), cour.getCourse());
         }
     }
 
@@ -133,7 +109,7 @@ public class FirstActivity extends AppCompatActivity {
                         pdfView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent=new Intent(FirstActivity.this,WevViewPdf.class);
+                                Intent intent=new Intent(SecondActivity.this,WevViewPdf.class);
                                 intent.putExtra("url",uriString);
                                 startActivity(intent);
                             }
@@ -145,17 +121,11 @@ public class FirstActivity extends AppCompatActivity {
     };
 
 
-
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(receiver, new IntentFilter(
                 DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
-
-
-
 }
+

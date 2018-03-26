@@ -45,8 +45,8 @@ import static android.R.attr.bitmap;
 import static android.R.attr.data;
 
 public class UploadActivity extends AppCompatActivity {
-    private Spinner spinner1, spinner2, spinner3;
-    private ArrayAdapter<CharSequence> adapter1, adapter2, adapter3;
+    private Spinner spinner1, spinner2, spinner3, spinner4;
+    private ArrayAdapter<CharSequence> adapter1, adapter2, adapter3, adapter4;
     private EditText mRoomNo;
     private Button Upload_btn, Pdf_btn, Qr_generate;
     private DatabaseReference mDatabase;
@@ -80,15 +80,19 @@ public class UploadActivity extends AppCompatActivity {
         spinner1 = (Spinner) findViewById(R.id.course_spinner);
         spinner2 = (Spinner) findViewById(R.id.year_spinner);
         spinner3 = (Spinner) findViewById(R.id.semester_spinner);
+        spinner4 = (Spinner) findViewById(R.id.event_spinner);
         mRoomNo = (EditText)findViewById(R.id.roomNo);
 
         adapter1 = ArrayAdapter.createFromResource(this, R.array.courses, android.R.layout.simple_spinner_item);
         adapter2 = ArrayAdapter.createFromResource(this, R.array.years, android.R.layout.simple_spinner_item);
         adapter3 = ArrayAdapter.createFromResource(this, R.array.semesters, android.R.layout.simple_spinner_item);
+        adapter4 = ArrayAdapter.createFromResource(this, R.array.event, android.R.layout.simple_spinner_item);
 
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_item);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_item);
+
         Upload_btn = (Button) findViewById(R.id.upload_button);
         Pdf_btn = (Button) findViewById(R.id.pdf_button);
         Qr_generate = (Button) findViewById(R.id.qr_generate);
@@ -99,6 +103,8 @@ public class UploadActivity extends AppCompatActivity {
         spinner1.setAdapter(adapter1);
         spinner2.setAdapter(adapter2);
         spinner3.setAdapter(adapter3);
+        spinner4.setAdapter(adapter4);
+
 
         get_id = mDatabase.push().getKey();
 
@@ -141,6 +147,19 @@ public class UploadActivity extends AppCompatActivity {
             }
         });
 
+        spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + " selected", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         Upload_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,11 +182,25 @@ public class UploadActivity extends AppCompatActivity {
             }
         });
 
+
+
         //For generating QR CODE
         Qr_generate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                text2Qr = get_id;
+
+                final String Get_Course = spinner1.getSelectedItem().toString();
+                final String Get_Year = spinner2.getSelectedItem().toString();
+                final String Get_Sem = spinner3.getSelectedItem().toString();
+                final String Get_Event = spinner4.getSelectedItem().toString();
+                final String Get_Room = mRoomNo.getText().toString().trim();
+
+                if(Get_Event.equals("Yes"))
+                {
+                    text2Qr = get_id;
+                } else{
+                    text2Qr = Get_Course + Get_Sem + Get_Year ;
+                }
                 MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
                 try {
                     BitMatrix bitMatrix = multiFormatWriter.encode(text2Qr, BarcodeFormat.QR_CODE, 200, 200);
@@ -276,6 +309,7 @@ public class UploadActivity extends AppCompatActivity {
         final String Get_Course = spinner1.getSelectedItem().toString();
         final String Get_Year = spinner2.getSelectedItem().toString();
         final String Get_Sem = spinner3.getSelectedItem().toString();
+        final String Get_Event = spinner4.getSelectedItem().toString();
         final String Get_Room = mRoomNo.getText().toString().trim();
 
         if (!TextUtils.isEmpty(Get_Course) && !TextUtils.isEmpty(Get_Year) && !TextUtils.isEmpty(Get_Sem) && flag == 1) {
@@ -291,12 +325,12 @@ public class UploadActivity extends AppCompatActivity {
                     @SuppressWarnings("VisibleForTests")
                     final String Get_pdf_url = taskSnapshot.getDownloadUrl().toString();
 
-                    Data data = new Data(Get_Course, Get_Year, Get_Sem, get_id, Get_Room, Get_pdf_url);
+                    Data data = new Data(Get_Course, Get_Year, Get_Sem, get_id, Get_Room, Get_pdf_url, Get_Event);
                     mDatabase.child(get_id).setValue(data);
                     //progressBar.setVisibility(View.GONE);
 
-
-                    Intent intent = new Intent(UploadActivity.this, DisplayActivity.class);
+                if(Get_Event.equals("No"))
+                {    Intent intent = new Intent(UploadActivity.this, DisplayActivity.class);
                     //Intent intent = new Intent(UploadActivity.this, DisplayActivity.class);
                     mProgress.dismiss();
                     Bundle b = new Bundle();
@@ -304,6 +338,16 @@ public class UploadActivity extends AppCompatActivity {
                     intent.putExtras(b);
                     startActivity(intent);
                     //Toast.makeText(this, "uploaded", Toast.LENGTH_LONG).show();
+                }else
+                {
+                    Intent intent = new Intent(UploadActivity.this, DisplayActivity2.class);
+                    //Intent intent = new Intent(UploadActivity.this, DisplayActivity.class);
+                    mProgress.dismiss();
+                    Bundle b = new Bundle();
+                    b.putSerializable("user", data);
+                    intent.putExtras(b);
+                    startActivity(intent);
+                }
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -326,35 +370,5 @@ public class UploadActivity extends AppCompatActivity {
 
     }
 
-    private void UploadQR() {
-        String point = "123";
-        try {
-            bitmap = TextToImageEncode(get_id + " " + point);
-
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            final byte[] data1 = baos.toByteArray();
-
-            UploadTask uploadTask = mStorage.child(Constants.STORAGE_PATH_QR_CODES).child(mQRUri.getLastPathSegment() + ".jpeg").putBytes(data1);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(UploadActivity.this, "Error Occurred", Toast.LENGTH_LONG).show();
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    @SuppressWarnings("VisibleForTests")
-                    final String Get_qr_url = taskSnapshot.getDownloadUrl().toString();
-                    Qrdata data1 = new Qrdata(Get_qr_url);
-                    mDatabase.child(get_id).setValue(data1);
-                }
-            });
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-    }
 }
 

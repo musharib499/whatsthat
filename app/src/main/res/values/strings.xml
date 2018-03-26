@@ -16,11 +16,14 @@
     <string name="choose">choose</string>
     <string name="upload">upload</string>
     <string name="room_no">Room No. :</string>
+    <string name="event">Event :</string>
     <string-array name="courses">
         <item>None</item>
         <item>BBA</item>
         <item>BCA</item>
         <item>MBA</item>
+        <item>BBA LL.B</item>
+        <item>LL.B</item>
     </string-array>
 
     <string-array name="years">
@@ -38,6 +41,11 @@
         <item>4th</item>
         <item>5th</item>
         <item>6th</item>
+    </string-array>
+
+    <string-array name="event">
+        <item>No</item>
+        <item>Yes</item>
     </string-array>
 
 </resources>

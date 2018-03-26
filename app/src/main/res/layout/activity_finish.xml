@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="#009688"
     tools:context="com.mayanksharma.whatsthat.FinishActivity"
-    android:padding="10dp">
+    android:padding="16dp">
 
 
     <TextView
@@ -36,7 +36,18 @@
         android:textSize="45sp"
         android:layout_gravity="center"
         android:textColor="#ffffff"
+        android:textStyle="bold"
         android:layout_marginTop="35dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload again"
+        android:id="@+id/upload_again"
+        android:textColor="#ffffff"
+        android:layout_marginTop="50dp"
+        android:textSize="20sp"
+        android:background="#FFA000"/>
 
     <Button
         android:layout_width="match_parent"
@@ -44,7 +55,8 @@
         android:text="Log out"
         android:id="@+id/logout"
         android:textColor="#ffffff"
-        android:layout_marginTop="50dp"
-        android:background="#FFA000"/>
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:background="#AFB42B"/>
 
 </LinearLayout>

@@ -28,6 +28,10 @@ public class DisplayActivity extends AppCompatActivity {
     private Button bNext;
     private String text2Qr;
     private String get_id;
+    private String get_course;
+    private String get_sem;
+    private String get_year;
+    private String get_event;
     private Uri mQrCodeUri = null;
     List<Data> dataList;
 
@@ -69,6 +73,18 @@ public class DisplayActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(courses.getId()))
             get_id = (courses.getId());
 
+        if (!TextUtils.isEmpty(courses.getCourse()))
+            get_course = (courses.getCourse());
+
+        if (!TextUtils.isEmpty(courses.getSem()))
+            get_sem = (courses.getSem());
+
+        if (!TextUtils.isEmpty(courses.getYear()))
+            get_year = (courses.getYear());
+
+        if (!TextUtils.isEmpty(courses.getEvent()))
+            get_event = (courses.getEvent());
+
        /* progressbar.setVisibility(View.GONE);
         pdfView.setVisibility(View.VISIBLE);
         pdfView.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +106,8 @@ public class DisplayActivity extends AppCompatActivity {
         super.onStart();
         //For generating QR CODE
 
-                text2Qr = get_id;
+                    text2Qr = get_course + get_sem + get_year;
+
                 MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
                 try {
                     BitMatrix bitMatrix = multiFormatWriter.encode(text2Qr, BarcodeFormat.QR_CODE, 200, 200);
