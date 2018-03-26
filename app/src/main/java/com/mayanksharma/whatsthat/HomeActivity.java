@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
@@ -21,22 +22,15 @@ import com.google.zxing.integration.android.IntentResult;
 import com.mayanksharma.whatsthat.model.Course;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     private Button buttonScan;
     private IntentIntegrator qrScan;
-    String post_qrValue;
-    String post_course;
-    String post_year;
-    String post_sem;
-    String post_image;
-    String id;
-    private int flag = 0;
     private FirebaseDatabase mDatabase;
-    private StorageReference mStorage;
-    Data uid;
+
 
 
 
@@ -94,31 +88,63 @@ public class HomeActivity extends AppCompatActivity {
             if(scanContent == null)
             {
                 Toast.makeText(HomeActivity.this, "No result", Toast.LENGTH_LONG).show();
-            } else {//Toast.makeText(HomeActivity.this, scanContent, Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(HomeActivity.this, scanContent, Toast.LENGTH_LONG).show();
+                Log.d("mayank",scanContent);
 
-                mDatabase.getReference("Docs").getRef().child(scanContent).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
+                try {
 
-                            Course course = dataSnapshot.getValue(Course.class);
-                            ArrayList<Course> courseArrayList = new ArrayList<Course>();
-                            courseArrayList.add(course);
-                            Intent intent1 = new Intent(HomeActivity.this, FirstActivity.class);
-                            intent1.putParcelableArrayListExtra("course", courseArrayList);
-                            startActivity(intent1);
-                            finish();
+                    DatabaseReference ref = mDatabase.getInstance().getReference().child("Docs");
+                    ref.addListenerForSingleValueEvent(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    //Get map of users in datasnapshot
+                                    if (dataSnapshot.exists()) {
+                                        getDocData(dataSnapshot, (Map<String, Object>) dataSnapshot.getValue(), scanContent);
+                                    } else {
+                                        Toast.makeText(HomeActivity.this, "Result Not Found", Toast.LENGTH_LONG).show();
+                                    }
+                                }
 
-                        }else{
-                            Toast.makeText(HomeActivity.this, "Result Not Found", Toast.LENGTH_LONG).show();
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.e("Home Scanner Error", "Failed to read app title value.", databaseError.toException());
+                                }
+                            });
+
+
+                  
+                   /* mDatabase.getReference("Docs").getRef().child(scanContent).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+
+                                Course course = dataSnapshot.getValue(Course.class);
+                                ArrayList<Course> courseArrayList = new ArrayList<>();
+                                courseArrayList.add(course);
+                                //Intent intent1 = new Intent(HomeActivity.this, FirstActivity.class);
+                                Intent intent1 = new Intent(HomeActivity.this, SecondActivity.class);
+                                intent1.putParcelableArrayListExtra("course", courseArrayList);
+                                startActivity(intent1);
+                                finish();
+
+                            } else {
+                                Toast.makeText(HomeActivity.this, "Result Not Found", Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.e("Home Scanner Error", "Failed to read app title value.", databaseError.toException());
-                    }
-                });
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.e("Home Scanner Error", "Failed to read app title value.", databaseError.toException());
+                        }
+                    });*/
+                } catch (Exception e) {
+                    Toast.makeText(HomeActivity.this, "Result Not Found", Toast.LENGTH_LONG).show();
+                    Log.d("Scan",e.getMessage());
+
+                }
             }
           /*  if(scanContent == null)
             {
@@ -137,6 +163,34 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    private void getDocData(DataSnapshot dataSnapshot, Map<String, Object> users, String scanContent) {
+
+        ArrayList<Long> phoneNumbers = new ArrayList<>();
+
+        //iterate through each user, ignoring their UID
+        for (Map.Entry<String, Object> entry : users.entrySet()){
+
+
+
+            //Get user map
+            Map singleUser = (Map) entry.getValue();
+
+            if (scanContent.contains(singleUser.get("course").toString()+""+singleUser.get("year"))) {
+                Course course = dataSnapshot.getValue(Course.class);
+                ArrayList<Course> courseArrayList = new ArrayList<>();
+                courseArrayList.add(course);
+                //Intent intent1 = new Intent(HomeActivity.this, FirstActivity.class);
+                Intent intent1 = new Intent(HomeActivity.this, SecondActivity.class);
+                intent1.putParcelableArrayListExtra("course", courseArrayList);
+                startActivity(intent1);
+                finish();
+
+            }
+        }
+
+        System.out.println(phoneNumbers.toString());
+    }
+    
     protected boolean shouldAskPermissions() {
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
